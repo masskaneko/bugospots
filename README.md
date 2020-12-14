@@ -1,5 +1,5 @@
 # Bugospots
-Bugospots is a Go implementation of the reference [igrigorik/bugspots](https://github.com/igrigorik/bugspots) - a bug prediction tool.
+Bugospots is a Go implementation of the reference [igrigorik/bugspots](https://github.com/igrigorik/bugspots) - a bug prediction tool.  
 The bug prediction algorithm is stated on chapter V. in the paper - [Does Bug Prediction Support Human Developers? Findings from a Google Case Study](https://research.google/pubs/pub41145/).
 
 ## Note
