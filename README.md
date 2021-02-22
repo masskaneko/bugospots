@@ -33,6 +33,9 @@ Following shows sample output.
 2020/12/31 19:43:33 latest bug fix: 2020-12-29 13:24:35 +0900 JST
 2020/12/31 19:43:33 current: 2020-12-29 14:00:00.1542176 +0900 JST
 2020/12/31 19:43:33 bug fixes: 987
+2020/12/31 19:43:33 Calculating bug prediction score for bug fix commits:
+987 / 987 [=================================================================] 100.00% 18s
+2020/12/31 19:43:51 Hotspots(top 10):
 1.0000000123456789,edit/and/crash.c
 0.9123456789123456,want/to/throw/away.mk
 0.8012345678901234,poopy.py
@@ -41,8 +44,8 @@ Following shows sample output.
 0.5353535353535353,massive_logic.h
 0.4321431431243124,SingletonLover.java
 0.3939393939393939,cannot/read.yml
-0.21021021021021021,god.go
-0.10000001234567890,shutup.sh
+0.2102102102102102,god.go
+0.1000000123456789,shutup.sh
 ```
 
 ## License
