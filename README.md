@@ -7,10 +7,13 @@ Bugospots is buggy and unstable.
 Some behavior of Bugospots is not equal to the reference's.
 
 ## Building and Dependency
-Bugospots uses [go-git/go-git](https://github.com/go-git/go-git).
+Bugospots uses
+* [go-git/go-git](https://github.com/go-git/go-git)
+* [cheggaaa/pb](https://github.com/cheggaaa/pb)
 
 ```
 $ go get github.com/go-git/go-git
+$ go get github.com/cheggaaa/pb
 $ go build -o bugospots bugospots.go
 ```
 
