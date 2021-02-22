@@ -46,10 +46,22 @@ func main() {
 	)
 	flag.Parse()
 
-	repo, _ := gogit.PlainOpen(*gitPath)
-	ref, _ := repo.Head()
-	head, _ := repo.CommitObject(ref.Hash())
-	cIter, _ := repo.Log(&gogit.LogOptions{From: head.Hash})
+	repo, err := gogit.PlainOpen(*gitPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+	ref, err := repo.Head()
+	if err != nil {
+		log.Fatal(err)
+	}
+	head, err := repo.CommitObject(ref.Hash())
+	if err != nil {
+		log.Fatal(err)
+	}
+	cIter, err := repo.Log(&gogit.LogOptions{From: head.Hash})
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	var bugFixes []object.Commit
 	fmj := NewFixMessageJudger(*fixRegex)
@@ -77,11 +89,23 @@ func main() {
 	log.Println("current:", time.Now().Local())
 	log.Println("bug fixes:", len(bugFixes))
 	fileScoreMap := make(map[string]float64)
-	for _, b := range bugFixes {
-		prev, _ := repo.CommitObject(b.ParentHashes[0])
-		bTree, _ := b.Tree()
-		prevTree, _ := prev.Tree()
-		patch, _ := bTree.Patch(prevTree)
+	for _, b := range bugFixes[1:] {
+		prev, err := repo.CommitObject(b.ParentHashes[0])
+		if err != nil {
+			continue
+		}
+		bTree, err := b.Tree()
+		if err != nil {
+			continue
+		}
+		prevTree, err := prev.Tree()
+		if err != nil {
+			continue
+		}
+		patch, err := bTree.Patch(prevTree)
+		if err != nil {
+			continue
+		}
 		for _, fileStat := range patch.Stats() {
 			t := float64(1) - float64(currentTime-b.Author.When.Unix())/float64(currentTime-oldestFixTime)
 			if t < 0 {
