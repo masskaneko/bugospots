@@ -11,6 +11,7 @@ import (
 	"sort"
 	"time"
 
+	"github.com/cheggaaa/pb"
 	gogit "github.com/go-git/go-git"
 	"github.com/go-git/go-git/plumbing/object"
 )
@@ -87,9 +88,15 @@ func main() {
 	log.Println("oldest bug fix:", bugFixes[0].Author.When.Local())
 	log.Println("latest bug fix:", bugFixes[len(bugFixes)-1].Author.When.Local())
 	log.Println("current:", time.Now().Local())
-	log.Println("bug fixes:", len(bugFixes))
+	log.Println("bug fixes:", len(bugFixes)-1)
 	fileScoreMap := make(map[string]float64)
+
+	log.Println("Calculating bug prediction score for bug fix commits:")
+	count := len(bugFixes) - 1
+	bar := pb.StartNew(count)
+
 	for _, b := range bugFixes[1:] {
+		bar.Increment()
 		prev, err := repo.CommitObject(b.ParentHashes[0])
 		if err != nil {
 			continue
@@ -114,6 +121,7 @@ func main() {
 			fileScoreMap[fileStat.Name] += 1 / (1 + math.Exp(-12*t+12))
 		}
 	}
+	bar.Finish()
 
 	var fileScoreArray []FileScore
 	for key, value := range fileScoreMap {
@@ -127,6 +135,7 @@ func main() {
 		return fileScoreArray[i].Score > fileScoreArray[j].Score
 	})
 
+	log.Println("Hotspots(top 10):")
 	for i, fs := range fileScoreArray {
 		fmt.Println(fmt.Sprint(fs.Score) + "," + fs.Path)
 		if i >= 10 {
